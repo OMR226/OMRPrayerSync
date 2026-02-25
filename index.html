@@ -1,0 +1,369 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>OMR Prayer Sync — Smart Prayer Reminders for Windows</title>
+  <meta name="description" content="OMR Prayer Sync is a Windows tray app + service that keeps prayer times updated, plays Adhan, and reminds you after a custom delay — with a weekly Surah Al-Kahf reminder." />
+  <meta property="og:title" content="OMR Prayer Sync — Smart Prayer Reminders for Windows" />
+  <meta property="og:description" content="Accurate prayer times + Adhan + reminders after a custom delay, plus Surah Al-Kahf weekly reminder." />
+  <meta property="og:image" content="assets/hero.jpg" />
+
+  <style>
+    :root{
+      --bg:#0b0f17;
+      --card:#111827;
+      --card2:#0f172a;
+      --text:#e5e7eb;
+      --muted:#a7b0c0;
+      --accent:#60a5fa;
+      --accent2:#34d399;
+      --border:rgba(255,255,255,.08);
+      --shadow: 0 18px 50px rgba(0,0,0,.45);
+      --radius: 18px;
+      --max: 1100px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      background: radial-gradient(1200px 700px at 10% -20%, rgba(96,165,250,.25), transparent 60%),
+                  radial-gradient(900px 600px at 95% 0%, rgba(52,211,153,.20), transparent 55%),
+                  var(--bg);
+      color:var(--text);
+    }
+    a{color:inherit}
+    .wrap{max-width:var(--max); margin:0 auto; padding:28px 18px 80px}
+    header{
+      display:flex; align-items:center; justify-content:space-between;
+      gap:14px; padding:10px 0 24px;
+    }
+    .brand{display:flex; align-items:center; gap:10px; text-decoration:none}
+    .brand img{width:38px; height:38px; border-radius:10px; border:1px solid var(--border); background:#0b1220}
+    .brand .title{font-weight:800; letter-spacing:.2px}
+    .nav{display:flex; gap:14px; color:var(--muted); font-size:14px}
+    .nav a{text-decoration:none; padding:8px 10px; border:1px solid transparent; border-radius:12px}
+    .nav a:hover{border-color:var(--border); background:rgba(255,255,255,.03)}
+    .hero{
+      display:grid; grid-template-columns: 1.15fr .85fr;
+      gap:18px; align-items:stretch;
+      margin-top:6px;
+    }
+    .panel{
+      background: linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01));
+      border:1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .hero-left{padding:26px}
+    h1{margin:0 0 10px; font-size:40px; line-height:1.1}
+    .sub{color:var(--muted); font-size:16px; line-height:1.5; margin:0 0 18px}
+    .cta-row{display:flex; flex-wrap:wrap; gap:10px; margin-top:14px}
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center;
+      gap:10px; padding:12px 14px;
+      border-radius:14px;
+      border:1px solid var(--border);
+      text-decoration:none;
+      font-weight:700;
+      background:rgba(255,255,255,.04);
+    }
+    .btn.primary{
+      background: linear-gradient(90deg, rgba(96,165,250,.95), rgba(52,211,153,.85));
+      color:#06101f;
+      border-color: rgba(255,255,255,.15);
+    }
+    .btn:hover{transform: translateY(-1px); transition: .12s ease}
+    .pill-row{display:flex; flex-wrap:wrap; gap:10px; margin-top:16px}
+    .pill{
+      font-size:13px; color:var(--muted);
+      border:1px solid var(--border);
+      padding:7px 10px; border-radius:999px;
+      background:rgba(255,255,255,.02);
+    }
+    .hero-right{
+      position:relative;
+      min-height:320px;
+      background: #071024;
+    }
+    .hero-right img{
+      width:100%; height:100%; object-fit:cover; display:block;
+      opacity:.92;
+    }
+    .hero-right .overlay{
+      position:absolute; inset:0;
+      background: linear-gradient(180deg, rgba(11,15,23,.25), rgba(11,15,23,.92));
+    }
+    .hero-right .caption{
+      position:absolute; left:18px; right:18px; bottom:16px;
+      color:var(--muted); font-size:13px; line-height:1.35;
+    }
+
+    section{margin-top:18px}
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap:14px;
+    }
+    .card{padding:16px}
+    .card h3{margin:2px 0 8px; font-size:16px}
+    .card p{margin:0; color:var(--muted); font-size:14px; line-height:1.5}
+    .k{display:inline-flex; align-items:center; justify-content:center;
+       width:34px; height:34px; border-radius:12px;
+       border:1px solid var(--border);
+       background:rgba(255,255,255,.02);
+       margin-bottom:10px;
+       font-weight:900; color: var(--text);
+    }
+
+    .two{
+      display:grid; grid-template-columns: 1fr 1fr; gap:14px;
+      margin-top:14px;
+    }
+    .steps ol{margin:10px 0 0 18px; color:var(--muted); line-height:1.6; font-size:14px}
+    .note{color:var(--muted); font-size:13px; line-height:1.5}
+    .screens{
+      display:grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap:14px;
+    }
+    .shot{padding:0; overflow:hidden}
+    .shot img{width:100%; height:280px; object-fit:cover; display:block; background:#0a0f1d}
+    .shot .label{padding:12px 14px; border-top:1px solid var(--border); color:var(--muted); font-size:13px}
+
+    footer{
+      margin-top:26px;
+      padding-top:18px;
+      border-top:1px solid var(--border);
+      color:var(--muted);
+      font-size:13px;
+      display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap;
+    }
+    code{
+      background: rgba(255,255,255,.06);
+      border:1px solid var(--border);
+      padding:2px 6px;
+      border-radius:8px;
+      color: #dbeafe;
+    }
+
+    @media (max-width: 980px){
+      .hero{grid-template-columns:1fr}
+      h1{font-size:34px}
+      .grid{grid-template-columns:1fr}
+      .two{grid-template-columns:1fr}
+      .screens{grid-template-columns:1fr}
+      .hero-right{min-height:240px}
+      .shot img{height:240px}
+      .nav{display:none}
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+
+    <header>
+      <a class="brand" href="#top" aria-label="OMR Prayer Sync Home">
+        <img src="assets/logo.png" alt="OMR Prayer Sync logo" onerror="this.style.display='none'"/>
+        <div class="title">OMR Prayer Sync</div>
+      </a>
+      <nav class="nav" aria-label="Page navigation">
+        <a href="#features">Features</a>
+        <a href="#screenshots">Screenshots</a>
+        <a href="#install">Install</a>
+        <a href="#faq">FAQ</a>
+      </nav>
+    </header>
+
+    <main id="top" class="hero">
+      <div class="panel hero-left">
+        <h1>Smart prayer reminders for Windows.</h1>
+        <p class="sub">
+          OMR Prayer Sync runs quietly in your system tray and keeps prayer times accurate using your location.
+          It can play Adhan at the official time, then remind you after a custom delay
+          (e.g., 30 minutes) with a friendly notification — without talking over the Adhan.
+        </p>
+
+        <div class="cta-row">
+          <a class="btn primary"
+             href="https://github.com/omr226/OMRPrayerSync/releases/latest/download/OMRPrayerSync.msi">
+            ⬇️ Download Installer (Windows)
+          </a>
+          <a class="btn"
+             href="https://github.com/omr226/OMRPrayerSync/releases">
+            Release Notes
+          </a>
+        </div>
+
+        <div class="pill-row">
+          <div class="pill">✅ Tray app + background service</div>
+          <div class="pill">📍 GPS preferred + IP fallback + manual</div>
+          <div class="pill">🔔 Toast notifications + optional voice</div>
+          <div class="pill">🕌 Adhan audio (per prayer toggle)</div>
+          <div class="pill">⏱ Reminders after custom minutes</div>
+          <div class="pill">📖 Surah Al-Kahf weekly reminder</div>
+        </div>
+
+        <p class="note" style="margin-top:14px">
+          Works on Windows 10/11. Installer sets up the service and starts the notifier at logon.
+        </p>
+      </div>
+
+      <div class="panel hero-right" aria-label="Hero image">
+        <img src="assets/hero.jpg" alt="OMR Prayer Sync running on Windows desktop (hero image)" />
+        <div class="overlay"></div>
+        <div class="caption">
+          Tip: Use a clean screenshot of the tray icon + a toast notification for the best first impression.
+        </div>
+      </div>
+    </main>
+
+    <section id="features" class="panel card" style="margin-top:16px">
+      <h2 style="margin:0 0 10px">What it does</h2>
+      <div class="grid">
+        <div class="panel card">
+          <div class="k">⏱</div>
+          <h3>Accurate prayer times</h3>
+          <p>
+            Prayer times stay in sync based on your location and chosen calculation method (with Hanafi/Standard Asr support).
+          </p>
+        </div>
+        <div class="panel card">
+          <div class="k">🕌</div>
+          <h3>Adhan at official time</h3>
+          <p>
+            Plays Adhan audio (per prayer toggle). Your notifications and voice reminders will never talk over the Adhan.
+          </p>
+        </div>
+        <div class="panel card">
+          <div class="k">🔔</div>
+          <h3>Reminder after a delay</h3>
+          <p>
+            Get a reminder after <strong>30 minutes</strong> (or your custom minutes per prayer) that says
+            it’s time to pray and how long it’s been since Adhan.
+          </p>
+        </div>
+        <div class="panel card">
+          <div class="k">🧠</div>
+          <h3>Smart next-prayer countdown</h3>
+          <p>
+            Notifications can include how long until the next prayer, so you can plan your time.
+          </p>
+        </div>
+        <div class="panel card">
+          <div class="k">📖</div>
+          <h3>Surah Al-Kahf weekly reminder</h3>
+          <p>
+            Friday reminder (default 2:00 PM). Optional MP3 playback — automatically delayed if Adhan is currently playing.
+          </p>
+        </div>
+        <div class="panel card">
+          <div class="k">🔒</div>
+          <h3>Privacy-friendly</h3>
+          <p>
+            Your location is used only to calculate prayer times. The app runs locally (tray + service).
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="two">
+      <div id="install" class="panel card steps">
+        <h2 style="margin:0 0 6px">Install in 60 seconds</h2>
+        <ol>
+          <li>Download the MSI installer.</li>
+          <li>Run it and complete setup (Windows may show a security prompt).</li>
+          <li>After install, sign out/in (or restart) so the tray notifier starts automatically.</li>
+          <li>Click the tray icon to open Settings and customize reminders & Adhan.</li>
+        </ol>
+        <p class="note" style="margin-top:12px">
+          Download link: <code>/releases/latest/download/OMRPrayerSync.msi</code>
+          (update the filename to match your release asset).
+        </p>
+      </div>
+
+      <div class="panel card">
+        <h2 style="margin:0 0 6px">How it works</h2>
+        <p class="note" style="margin:10px 0 0">
+          <strong>Notifier (Tray App)</strong> runs under your logged-in Windows user and shows notifications,
+          plays audio, and provides Settings UI.
+          <br/><br/>
+          <strong>Service</strong> runs in the background and calculates schedules + triggers events (Adhan + reminders)
+          using secure local IPC.
+          <br/><br/>
+          Designed so the reminders keep working even if location becomes temporarily stale.
+        </p>
+      </div>
+    </section>
+
+    <section id="screenshots" class="panel card" style="margin-top:14px">
+      <h2 style="margin:0 0 10px">Screenshots</h2>
+      <p class="note" style="margin:0 0 14px">
+        Replace the placeholder images below with your real screenshots (recommended size: 1400px wide).
+      </p>
+
+      <div class="screens">
+        <div class="panel shot">
+          <img src="assets/screenshot-tray.png" alt="Tray icon and context menu screenshot" />
+          <div class="label">Tray icon + quick access menu</div>
+        </div>
+
+        <div class="panel shot">
+          <img src="assets/screenshot-toast.png" alt="Toast notification screenshot" />
+          <div class="label">Toast notifications: Adhan + reminder after custom minutes</div>
+        </div>
+
+        <div class="panel shot">
+          <img src="assets/screenshot-settings-prayer.png" alt="Settings window screenshot for prayer reminders" />
+          <div class="label">Settings: per-prayer Adhan toggles + reminder delay</div>
+        </div>
+
+        <div class="panel shot">
+          <img src="assets/screenshot-settings-kahf.png" alt="Settings window screenshot for Surah Al-Kahf tab" />
+          <div class="label">New tab: Surah Al-Kahf reminder (enabled + time + optional audio)</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="faq" class="panel card" style="margin-top:14px">
+      <h2 style="margin:0 0 10px">FAQ</h2>
+      <div class="grid" style="grid-template-columns:1fr 1fr; gap:14px">
+        <div class="panel card">
+          <h3>Will voice reminders speak over Adhan?</h3>
+          <p>No. The app queues TTS and only speaks after Adhan finishes playing.</p>
+        </div>
+        <div class="panel card">
+          <h3>Can I disable Surah Al-Kahf reminders or audio?</h3>
+          <p>Yes. You can disable reminder, disable audio, and customize the Friday time.</p>
+        </div>
+        <div class="panel card">
+          <h3>Does it require internet?</h3>
+          <p>Prayer times are fetched from an API. Audio can be auto-downloaded once (and then cached locally).</p>
+        </div>
+        <div class="panel card">
+          <h3>Where is the installer hosted?</h3>
+          <p>
+            On the <strong>public</strong> GitHub repo’s Releases page. Your source code can stay private in a separate repo.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div>
+        © <span id="y"></span> OMR Prayer Sync • Built for Windows
+      </div>
+      <div>
+        Having issues? Check the <a href="https://github.com/omr226/OMRPrayerSync/releases">latest release notes</a>.
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    document.getElementById("y").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
