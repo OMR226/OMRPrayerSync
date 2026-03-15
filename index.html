@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>OMR Prayer Sync — Smart Prayer Reminders for Windows</title>
-  <meta name="description" content="OMR Prayer Sync is a Windows tray app + service that keeps prayer times updated, plays Adhan, and reminds you after a custom delay — with a weekly Surah Al-Kahf reminder." />
-  <meta property="og:title" content="OMR Prayer Sync — Smart Prayer Reminders for Windows" />
-  <meta property="og:description" content="Accurate prayer times + Adhan + reminders after a custom delay, plus Surah Al-Kahf weekly reminder." />
-  <meta property="og:image" content="assets/hero.jpg" />
+  <title>OMR Prayer Sync — Prayer Times, Adhan & Smart Reminders for Windows</title>
+  <meta name="description" content="OMR Prayer Sync is a Windows tray app + background service that keeps official prayer times accurate, plays Adhan, reminds you after a custom delay, supports custom reminders, and includes a weekly Surah Al-Kahf reminder." />
+  <meta property="og:title" content="OMR Prayer Sync — Prayer Times, Adhan & Smart Reminders for Windows" />
+  <meta property="og:description" content="Accurate prayer times, Adhan at official time, reminder after custom offset, custom reminders, next-prayer countdown, and Surah Al-Kahf weekly reminder." />
+  <meta property="og:image" content="assets/og-cover.jpg" />
 
   <style>
     :root{
@@ -19,18 +19,19 @@
       --accent:#60a5fa;
       --accent2:#34d399;
       --border:rgba(255,255,255,.08);
-      --shadow: 0 18px 50px rgba(0,0,0,.45);
-      --radius: 18px;
-      --max: 1100px;
+      --shadow:0 18px 50px rgba(0,0,0,.45);
+      --radius:18px;
+      --max:1180px;
     }
     *{box-sizing:border-box}
     html,body{height:100%}
     body{
       margin:0;
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple Color Emoji","Segoe UI Emoji";
-      background: radial-gradient(1200px 700px at 10% -20%, rgba(96,165,250,.25), transparent 60%),
-                  radial-gradient(900px 600px at 95% 0%, rgba(52,211,153,.20), transparent 55%),
-                  var(--bg);
+      font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,"Apple Color Emoji","Segoe UI Emoji";
+      background:
+        radial-gradient(1200px 700px at 10% -20%, rgba(96,165,250,.25), transparent 60%),
+        radial-gradient(900px 600px at 95% 0%, rgba(52,211,153,.18), transparent 55%),
+        var(--bg);
       color:var(--text);
     }
     a{color:inherit}
@@ -40,26 +41,42 @@
       gap:14px; padding:10px 0 24px;
     }
     .brand{display:flex; align-items:center; gap:10px; text-decoration:none}
-    .brand img{width:38px; height:38px; border-radius:10px; border:1px solid var(--border); background:#0b1220}
+    .brand img{
+      width:40px; height:40px; border-radius:10px;
+      border:1px solid var(--border); background:#0b1220;
+    }
     .brand .title{font-weight:800; letter-spacing:.2px}
     .nav{display:flex; gap:14px; color:var(--muted); font-size:14px}
-    .nav a{text-decoration:none; padding:8px 10px; border:1px solid transparent; border-radius:12px}
+    .nav a{
+      text-decoration:none; padding:8px 10px;
+      border:1px solid transparent; border-radius:12px;
+    }
     .nav a:hover{border-color:var(--border); background:rgba(255,255,255,.03)}
+
     .hero{
-      display:grid; grid-template-columns: 1.15fr .85fr;
-      gap:18px; align-items:stretch;
+      display:grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap:18px;
+      align-items:stretch;
       margin-top:6px;
     }
     .panel{
-      background: linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01));
+      background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01));
       border:1px solid var(--border);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
       overflow:hidden;
     }
-    .hero-left{padding:26px}
-    h1{margin:0 0 10px; font-size:40px; line-height:1.1}
-    .sub{color:var(--muted); font-size:16px; line-height:1.5; margin:0 0 18px}
+    .hero-left{padding:28px}
+    .hero-right{padding:22px}
+    h1{margin:0 0 10px; font-size:42px; line-height:1.08}
+    h2{margin:0 0 10px}
+    .sub{
+      color:var(--muted);
+      font-size:16px;
+      line-height:1.6;
+      margin:0 0 18px;
+    }
     .cta-row{display:flex; flex-wrap:wrap; gap:10px; margin-top:14px}
     .btn{
       display:inline-flex; align-items:center; justify-content:center;
@@ -71,11 +88,11 @@
       background:rgba(255,255,255,.04);
     }
     .btn.primary{
-      background: linear-gradient(90deg, rgba(96,165,250,.95), rgba(52,211,153,.85));
+      background:linear-gradient(90deg, rgba(96,165,250,.95), rgba(52,211,153,.85));
       color:#06101f;
-      border-color: rgba(255,255,255,.15);
+      border-color:rgba(255,255,255,.15);
     }
-    .btn:hover{transform: translateY(-1px); transition: .12s ease}
+    .btn:hover{transform:translateY(-1px); transition:.12s ease}
     .pill-row{display:flex; flex-wrap:wrap; gap:10px; margin-top:16px}
     .pill{
       font-size:13px; color:var(--muted);
@@ -83,24 +100,20 @@
       padding:7px 10px; border-radius:999px;
       background:rgba(255,255,255,.02);
     }
-    .hero-right{
-      position:relative;
-      min-height:320px;
-      background: #071024;
+    .note{color:var(--muted); font-size:13px; line-height:1.6}
+    .mini-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+      margin-top:8px;
     }
-    .hero-right img{
-      width:100%; height:100%; object-fit:cover; display:block;
-      opacity:.92;
+    .mini{
+      padding:14px;
+      border:1px solid var(--border);
+      border-radius:14px;
+      background:rgba(255,255,255,.02);
     }
-    .hero-right .overlay{
-      position:absolute; inset:0;
-      background: linear-gradient(180deg, rgba(11,15,23,.25), rgba(11,15,23,.92));
-    }
-    .hero-right .caption{
-      position:absolute; left:18px; right:18px; bottom:16px;
-      color:var(--muted); font-size:13px; line-height:1.35;
-    }
-
+    .mini strong{display:block; margin-bottom:6px}
     section{margin-top:18px}
     .grid{
       display:grid;
@@ -109,30 +122,52 @@
     }
     .card{padding:16px}
     .card h3{margin:2px 0 8px; font-size:16px}
-    .card p{margin:0; color:var(--muted); font-size:14px; line-height:1.5}
-    .k{display:inline-flex; align-items:center; justify-content:center;
-       width:34px; height:34px; border-radius:12px;
-       border:1px solid var(--border);
-       background:rgba(255,255,255,.02);
-       margin-bottom:10px;
-       font-weight:900; color: var(--text);
+    .card p{margin:0; color:var(--muted); font-size:14px; line-height:1.6}
+    .k{
+      display:inline-flex; align-items:center; justify-content:center;
+      width:34px; height:34px; border-radius:12px;
+      border:1px solid var(--border);
+      background:rgba(255,255,255,.02);
+      margin-bottom:10px;
+      font-weight:900;
+      color:var(--text);
     }
-
-    .two{
-      display:grid; grid-template-columns: 1fr 1fr; gap:14px;
-      margin-top:14px;
+    .feature-split{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:14px;
     }
-    .steps ol{margin:10px 0 0 18px; color:var(--muted); line-height:1.6; font-size:14px}
-    .note{color:var(--muted); font-size:13px; line-height:1.5}
+    .feature-copy{padding:18px}
+    .feature-copy p{color:var(--muted); line-height:1.65; margin:0}
+    .feature-copy ul{
+      margin:12px 0 0 18px;
+      color:var(--muted);
+      line-height:1.7;
+      padding:0;
+    }
     .screens{
       display:grid;
       grid-template-columns: repeat(2, 1fr);
       gap:14px;
     }
     .shot{padding:0; overflow:hidden}
-    .shot img{width:100%; height:280px; object-fit:cover; display:block; background:#0a0f1d}
-    .shot .label{padding:12px 14px; border-top:1px solid var(--border); color:var(--muted); font-size:13px}
-
+    .shot img{
+      width:100%; height:300px; object-fit:cover;
+      display:block; background:#0a0f1d;
+    }
+    .shot .label{
+      padding:12px 14px;
+      border-top:1px solid var(--border);
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.5;
+    }
+    .steps ol{
+      margin:10px 0 0 18px;
+      color:var(--muted);
+      line-height:1.7;
+      font-size:14px;
+    }
     footer{
       margin-top:26px;
       padding-top:18px;
@@ -142,22 +177,22 @@
       display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap;
     }
     code{
-      background: rgba(255,255,255,.06);
+      background:rgba(255,255,255,.06);
       border:1px solid var(--border);
       padding:2px 6px;
       border-radius:8px;
-      color: #dbeafe;
+      color:#dbeafe;
     }
 
     @media (max-width: 980px){
       .hero{grid-template-columns:1fr}
-      h1{font-size:34px}
       .grid{grid-template-columns:1fr}
-      .two{grid-template-columns:1fr}
+      .feature-split{grid-template-columns:1fr}
       .screens{grid-template-columns:1fr}
-      .hero-right{min-height:240px}
-      .shot img{height:240px}
+      .mini-grid{grid-template-columns:1fr}
+      h1{font-size:34px}
       .nav{display:none}
+      .shot img{height:240px}
     }
   </style>
 </head>
@@ -180,174 +215,295 @@
 
     <main id="top" class="hero">
       <div class="panel hero-left">
-        <h1>Smart prayer reminders for Windows.</h1>
+        <h1>Your prayer schedule, reminders, and Adhan — automated on Windows.</h1>
         <p class="sub">
-          OMR Prayer Sync runs quietly in your system tray and keeps prayer times accurate using your location.
-          It can play Adhan at the official time, then remind you after a custom delay
-          (e.g., 30 minutes) with a friendly notification — without talking over the Adhan.
+          OMR Prayer Sync is a Windows tray app paired with a background service that keeps daily prayer times accurate,
+          plays Adhan at the official time, reminds you after your chosen delay for each salah,
+          and gives you a clean settings experience for prayer timing, custom reminders, and Friday Surah Al-Kahf.
         </p>
 
         <div class="cta-row">
           <a class="btn primary"
-             href="https://github.com/omr226/OMRPrayerSync/releases/latest/download/OMRPrayerSync.msi">
-            ⬇️ Download Installer (Windows)
+             href="https://github.com/OMR226/OMRPrayerSync/releases/latest/download/OMRPrayerSync.msi">
+            ⬇️ Download Latest Installer
           </a>
           <a class="btn"
-             href="https://github.com/omr226/OMRPrayerSync/releases">
-            Release Notes
+             href="https://github.com/OMR226/OMRPrayerSync/releases">
+            View Releases
           </a>
         </div>
 
         <div class="pill-row">
-          <div class="pill">✅ Tray app + background service</div>
-          <div class="pill">📍 GPS preferred + IP fallback + manual</div>
-          <div class="pill">🔔 Toast notifications + optional voice</div>
-          <div class="pill">🕌 Adhan audio (per prayer toggle)</div>
-          <div class="pill">⏱ Reminders after custom minutes</div>
-          <div class="pill">📖 Surah Al-Kahf weekly reminder</div>
+          <div class="pill">🕒 DST-aware official prayer times</div>
+          <div class="pill">🕌 Adhan at official time</div>
+          <div class="pill">🔔 Reminder after custom offset</div>
+          <div class="pill">📍 GPS, IP, or manual location</div>
+          <div class="pill">📖 Surah Al-Kahf Friday reminder</div>
+          <div class="pill">🛠 Custom reminders built in</div>
         </div>
 
         <p class="note" style="margin-top:14px">
-          Works on Windows 10/11. Installer sets up the service and starts the notifier at logon.
+          Built for Windows 10/11. Designed to stay out of the way until you need it.
         </p>
       </div>
 
-      <div class="panel hero-right" aria-label="Hero image">
-        <img src="assets/hero.jpg" alt="OMR Prayer Sync running on Windows desktop (hero image)" />
-        <div class="overlay"></div>
-        <div class="caption">
-          Tip: Use a clean screenshot of the tray icon + a toast notification for the best first impression.
+      <div class="panel hero-right">
+        <h2 style="margin-top:0">Why people will like it</h2>
+        <div class="mini-grid">
+          <div class="mini">
+            <strong>Reliable daily workflow</strong>
+            <span class="note">The background service keeps your daily prayer schedule active even when the settings window is closed.</span>
+          </div>
+          <div class="mini">
+            <strong>Flexible reminder timing</strong>
+            <span class="note">Set a default reminder offset, then override it for individual prayers like Maghrib or Fajr.</span>
+          </div>
+          <div class="mini">
+            <strong>Respectful audio flow</strong>
+            <span class="note">Voice reminders and other audio wait until Adhan finishes, so nothing talks over it.</span>
+          </div>
+          <div class="mini">
+            <strong>One place for everything</strong>
+            <span class="note">Prayer settings, Adhan, location, advanced options, custom reminders, and Friday reminders all live in one interface.</span>
+          </div>
         </div>
       </div>
     </main>
 
-    <section id="features" class="panel card" style="margin-top:16px">
-      <h2 style="margin:0 0 10px">What it does</h2>
+    <section id="features" class="panel card">
+      <h2>Core features</h2>
       <div class="grid">
         <div class="panel card">
           <div class="k">⏱</div>
-          <h3>Accurate prayer times</h3>
+          <h3>Official prayer times that stay accurate</h3>
           <p>
-            Prayer times stay in sync based on your location and chosen calculation method (with Hanafi/Standard Asr support).
+            Uses your location and selected calculation method to keep the daily schedule correct, including daylight saving time adjustments.
           </p>
         </div>
         <div class="panel card">
           <div class="k">🕌</div>
-          <h3>Adhan at official time</h3>
+          <h3>Adhan right on time</h3>
           <p>
-            Plays Adhan audio (per prayer toggle). Your notifications and voice reminders will never talk over the Adhan.
+            Plays Adhan at the official start of prayer, with per-prayer toggles and separate handling for Fajr audio.
           </p>
         </div>
         <div class="panel card">
           <div class="k">🔔</div>
-          <h3>Reminder after a delay</h3>
+          <h3>Prayer reminders after your chosen delay</h3>
           <p>
-            Get a reminder after <strong>30 minutes</strong> (or your custom minutes per prayer) that says
-            it’s time to pray and how long it’s been since Adhan.
+            Get reminded after 15, 30, or any custom offset you set per prayer, with optional voice and next-prayer countdown.
           </p>
         </div>
         <div class="panel card">
-          <div class="k">🧠</div>
-          <h3>Smart next-prayer countdown</h3>
+          <div class="k">📍</div>
+          <h3>Flexible location modes</h3>
           <p>
-            Notifications can include how long until the next prayer, so you can plan your time.
+            Choose GPS first, IP-based fallback, or fully manual coordinates if you prefer control over automatic detection.
+          </p>
+        </div>
+        <div class="panel card">
+          <div class="k">🛠</div>
+          <h3>Custom reminders beyond salah</h3>
+          <p>
+            Add your own reminders with title, message, time, weekday selection, popup, and optional audio.
           </p>
         </div>
         <div class="panel card">
           <div class="k">📖</div>
-          <h3>Surah Al-Kahf weekly reminder</h3>
+          <h3>Friday Surah Al-Kahf reminder</h3>
           <p>
-            Friday reminder (default 2:00 PM). Optional MP3 playback — automatically delayed if Adhan is currently playing.
-          </p>
-        </div>
-        <div class="panel card">
-          <div class="k">🔒</div>
-          <h3>Privacy-friendly</h3>
-          <p>
-            Your location is used only to calculate prayer times. The app runs locally (tray + service).
+            Dedicated weekly reminder with customizable time, optional audio playback, and controls separated from daily prayer settings.
           </p>
         </div>
       </div>
     </section>
 
-    <section class="two">
-      <div id="install" class="panel card steps">
-        <h2 style="margin:0 0 6px">Install in 60 seconds</h2>
-        <ol>
-          <li>Download the MSI installer.</li>
-          <li>Run it and complete setup (Windows may show a security prompt).</li>
-          <li>After install, sign out/in (or restart) so the tray notifier starts automatically.</li>
-          <li>Click the tray icon to open Settings and customize reminders & Adhan.</li>
-        </ol>
-        <p class="note" style="margin-top:12px">
-          Download link: <code>/releases/latest/download/OMRPrayerSync.msi</code>
-          (update the filename to match your release asset).
+    <section class="feature-split">
+      <div class="panel feature-copy">
+        <h2>Prayer times</h2>
+        <p>
+          OMR Prayer Sync keeps today’s official prayer times visible inside the app and uses those times as the foundation for Adhan and reminders.
         </p>
+        <ul>
+          <li>Supports calculation method selection</li>
+          <li>Supports Standard and Hanafi Asr</li>
+          <li>Refreshable official times grid</li>
+          <li>DST-aware schedule handling</li>
+        </ul>
       </div>
 
-      <div class="panel card">
-        <h2 style="margin:0 0 6px">How it works</h2>
-        <p class="note" style="margin:10px 0 0">
-          <strong>Notifier (Tray App)</strong> runs under your logged-in Windows user and shows notifications,
-          plays audio, and provides Settings UI.
-          <br/><br/>
-          <strong>Service</strong> runs in the background and calculates schedules + triggers events (Adhan + reminders)
-          using secure local IPC.
-          <br/><br/>
-          Designed so the reminders keep working even if location becomes temporarily stale.
+      <div class="panel feature-copy">
+        <h2>Reminders</h2>
+        <p>
+          Set a default reminder offset for all prayers, then fine-tune each salah separately. The app can remind you to pray and announce how long remains before the next prayer.
         </p>
+        <ul>
+          <li>Default offset plus per-prayer overrides</li>
+          <li>Voice reminder support</li>
+          <li>Next-prayer countdown in reminder text</li>
+          <li>Name-based personalization support</li>
+        </ul>
       </div>
     </section>
 
-    <section id="screenshots" class="panel card" style="margin-top:14px">
-      <h2 style="margin:0 0 10px">Screenshots</h2>
+    <section class="feature-split">
+      <div class="panel feature-copy">
+        <h2>Adhan</h2>
+        <p>
+          Adhan can be enabled globally and controlled per prayer. Audio playback is kept separate from spoken reminders so the experience stays respectful and clean.
+        </p>
+        <ul>
+          <li>Per-prayer Adhan toggle</li>
+          <li>Custom audio path support</li>
+          <li>Separate Fajr Adhan file support</li>
+          <li>Speech waits until Adhan finishes</li>
+        </ul>
+      </div>
+
+      <div class="panel feature-copy">
+        <h2>Location</h2>
+        <p>
+          Use automatic location when available, fall back to IP lookup when needed, or lock the app to manual coordinates for a stable setup.
+        </p>
+        <ul>
+          <li>GPS preferred mode</li>
+          <li>IP-based fallback mode</li>
+          <li>Manual latitude and longitude support</li>
+          <li>Useful for travel or desktop-only setups</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="feature-split">
+      <div class="panel feature-copy">
+        <h2>Advanced settings</h2>
+        <p>
+          Control update frequency, location freshness, API endpoint, and testing tools from one place.
+        </p>
+        <ul>
+          <li>Prayer API base URL</li>
+          <li>Location update interval</li>
+          <li>Location freshness control</li>
+          <li>Built-in test notification</li>
+        </ul>
+      </div>
+
+      <div class="panel feature-copy">
+        <h2>Custom reminders & Friday reminders</h2>
+        <p>
+          Beyond prayer reminders, the app includes a customizable reminder engine and a dedicated Surah Al-Kahf tab for weekly Friday use.
+        </p>
+        <ul>
+          <li>Recurring custom reminders with weekday selection</li>
+          <li>Popup and audio options</li>
+          <li>Dedicated Surah Al-Kahf schedule</li>
+          <li>Optional MP3 playback</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="screenshots" class="panel card">
+      <h2>Screenshots</h2>
       <p class="note" style="margin:0 0 14px">
-        Replace the placeholder images below with your real screenshots (recommended size: 1400px wide).
+        Replace each placeholder image below with real screenshots from your latest build.
       </p>
 
       <div class="screens">
         <div class="panel shot">
-          <img src="assets/screenshot-tray.png" alt="Tray icon and context menu screenshot" />
-          <div class="label">Tray icon + quick access menu</div>
+          <img src="assets/screenshot-tray.png" alt="Tray icon and tray menu screenshot" />
+          <div class="label">Tray icon, tray context menu, and next-prayer tooltip</div>
+        </div>
+
+        <div class="panel shot">
+          <img src="assets/screenshot-prayer-times.png" alt="Prayer times screenshot" />
+          <div class="label">Prayer tab showing official times, method, Asr school, and refreshable schedule grid</div>
+        </div>
+
+        <div class="panel shot">
+          <img src="assets/screenshot-reminders.png" alt="Reminders screenshot" />
+          <div class="label">Reminders tab with default delay, per-prayer offsets, and name/audio settings</div>
+        </div>
+
+        <div class="panel shot">
+          <img src="assets/screenshot-adhan.png" alt="Adhan screenshot" />
+          <div class="label">Adhan tab with prayer toggles and custom audio path options</div>
+        </div>
+
+        <div class="panel shot">
+          <img src="assets/screenshot-location.png" alt="Location screenshot" />
+          <div class="label">Location tab showing GPS, IP fallback, and manual coordinate support</div>
+        </div>
+
+        <div class="panel shot">
+          <img src="assets/screenshot-advanced.png" alt="Advanced screenshot" />
+          <div class="label">Advanced tab with API base URL, update frequency, freshness, and test notification</div>
+        </div>
+
+        <div class="panel shot">
+          <img src="assets/screenshot-custom-reminders.png" alt="Custom reminders screenshot" />
+          <div class="label">Custom reminders tab with weekday-based scheduling, popup, and audio controls</div>
+        </div>
+
+        <div class="panel shot">
+          <img src="assets/screenshot-kahf.png" alt="Surah Al-Kahf screenshot" />
+          <div class="label">Surah Al-Kahf tab with reminder toggle, audio toggle, time, and optional audio path</div>
         </div>
 
         <div class="panel shot">
           <img src="assets/screenshot-toast.png" alt="Toast notification screenshot" />
-          <div class="label">Toast notifications: Adhan + reminder after custom minutes</div>
+          <div class="label">Prayer reminder toast with official time, reminder time, and next-prayer countdown</div>
         </div>
 
         <div class="panel shot">
-          <img src="assets/screenshot-settings-prayer.png" alt="Settings window screenshot for prayer reminders" />
-          <div class="label">Settings: per-prayer Adhan toggles + reminder delay</div>
-        </div>
-
-        <div class="panel shot">
-          <img src="assets/screenshot-settings-kahf.png" alt="Settings window screenshot for Surah Al-Kahf tab" />
-          <div class="label">New tab: Surah Al-Kahf reminder (enabled + time + optional audio)</div>
+          <img src="assets/screenshot-adhan-toast.png" alt="Adhan toast screenshot" />
+          <div class="label">Adhan notification at official prayer time</div>
         </div>
       </div>
     </section>
 
-    <section id="faq" class="panel card" style="margin-top:14px">
-      <h2 style="margin:0 0 10px">FAQ</h2>
+    <section id="install" class="panel card">
+      <h2>Install in a minute</h2>
+      <div class="feature-split">
+        <div class="steps">
+          <ol>
+            <li>Download the latest MSI installer.</li>
+            <li>Run setup and complete installation.</li>
+            <li>Launch the notifier if needed.</li>
+            <li>Allow location access if Windows prompts you.</li>
+            <li>Open Settings from the tray icon and customize prayer behavior.</li>
+          </ol>
+        </div>
+        <div>
+          <p class="note">
+            Download link:
+            <br><br>
+            <code>https://github.com/OMR226/OMRPrayerSync/releases/latest/download/OMRPrayerSync.msi</code>
+          </p>
+          <p class="note">
+            The latest-release style link always points to your newest published installer, so you don’t have to update the HTML every time you make a release.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="faq" class="panel card">
+      <h2>FAQ</h2>
       <div class="grid" style="grid-template-columns:1fr 1fr; gap:14px">
         <div class="panel card">
-          <h3>Will voice reminders speak over Adhan?</h3>
-          <p>No. The app queues TTS and only speaks after Adhan finishes playing.</p>
+          <h3>Will the app talk over Adhan?</h3>
+          <p>No. Spoken reminders are queued and played only after Adhan finishes.</p>
         </div>
         <div class="panel card">
-          <h3>Can I disable Surah Al-Kahf reminders or audio?</h3>
-          <p>Yes. You can disable reminder, disable audio, and customize the Friday time.</p>
+          <h3>Can I use different reminder delays for each prayer?</h3>
+          <p>Yes. Keep a default offset or override each prayer individually.</p>
         </div>
         <div class="panel card">
-          <h3>Does it require internet?</h3>
-          <p>Prayer times are fetched from an API. Audio can be auto-downloaded once (and then cached locally).</p>
+          <h3>Does it handle daylight saving time correctly?</h3>
+          <p>Yes. The app now uses the correct local DST-adjusted prayer schedule.</p>
         </div>
         <div class="panel card">
-          <h3>Where is the installer hosted?</h3>
-          <p>
-            On the <strong>public</strong> GitHub repo’s Releases page. Your source code can stay private in a separate repo.
-          </p>
+          <h3>Can I disable Surah Al-Kahf reminder or audio?</h3>
+          <p>Yes. Reminder and audio can both be toggled independently, and the Friday time is customizable.</p>
         </div>
       </div>
     </section>
@@ -357,7 +513,7 @@
         © <span id="y"></span> OMR Prayer Sync • Built for Windows
       </div>
       <div>
-        Having issues? Check the <a href="https://github.com/omr226/OMRPrayerSync/releases">latest release notes</a>.
+        See the <a href="https://github.com/OMR226/OMRPrayerSync/releases">latest releases</a> for updates and installer downloads.
       </div>
     </footer>
   </div>
